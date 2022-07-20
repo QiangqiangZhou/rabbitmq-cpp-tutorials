@@ -20,7 +20,10 @@ int main(void)
                        uint64_t deliveryTag,
                        bool redelivered)
             {
-                const auto body = message.message();
+                //const auto body = message.message();
+                const char* data = message.body();
+                int size = message.bodySize();
+                std::string body(data, size);
                 std::cout<<" [x] Received "<<body<<std::endl;
 
                 size_t count = std::count(body.cbegin(), body.cend(), '.');

@@ -32,10 +32,26 @@ int main(void)
             uint64_t deliveryTag,
             bool redelivered)
     {
-        const auto body = message.message();
-        std::cout<<" [.] fib("<<body<<")"<<std::endl;
+        //const auto body = message.message();
+        const char* data = message.body();
+        int size = message.bodySize();
+        std::string body(data, size);
+        //std::cout << "data:" << data << "\n";
+        //std::cout << "size:" << size << "\n";
 
-        AMQP::Envelope env(std::to_string(fib(std::stoi(body))));
+        std::cout<<" [.] fib("<< body<<")"<<std::endl;
+
+        // Record start time
+        auto start = std::chrono::high_resolution_clock::now();
+
+        std::string msg = std::to_string(fib(std::stoi(body)));
+
+        // Record end time
+        auto finish = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = finish - start;
+        std::cout << "Elapsed time: " << 1000 * elapsed.count() << " ms\n";
+
+        AMQP::Envelope env(msg.c_str(), msg.length());
         env.setCorrelationID(message.correlationID());
 
         channel.publish("", message.replyTo(), env);

@@ -13,8 +13,10 @@ int main(void)
             uint64_t deliveryTag,
             bool redelivered)
     {
-
-        std::cout <<" [x] "<<message.message() << std::endl;
+        const char* data = message.body();
+        int size = message.bodySize();
+        std::string body(data, size);
+        std::cout << " [x] " << body << std::endl;
     };
 
     AMQP::QueueCallback callback =

@@ -6,7 +6,7 @@
 int main(int argc, const char* argv[])
 {
     const std::string msg =
-            argc > 1 ? join(&argv[1], &argv[argc], " ") : "info: Hello World!";
+            argc > 1 ? join(&argv[1], &argv[argc], " ") : "info: Hello World! From C++";
 
     SimplePocoHandler handler("localhost", 5672);
 
